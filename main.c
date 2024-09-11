@@ -37,6 +37,8 @@ void menu(){
     printf("4) Afficher les details d'un etudiant \n");
     printf("5) La moyenne generale\n");
     printf("6) Statistique\n");
+    printf("7) Rechercher\n");
+    printf("8) trier des etudiants\n");
     printf("-------------\n");
     printf("tapez N:\t");
     scanf("%d", &choix);
@@ -50,9 +52,18 @@ void ajouter(){
     scanf(" %[^\n]s", &etudiant[nbr_total].nom);
     printf("le prenom: \t");
     scanf(" %[^\n]s", &etudiant[nbr_total].prenom);
-    printf("la date de naissance(j/m/ans): \n");
-    scanf("%d %d %d", &etudiant[nbr_total].date_de_naissance.jour, &etudiant[nbr_total].date_de_naissance.mois, &etudiant[nbr_total].date_de_naissance.annee);
+    //scanf("%d %d %d", &etudiant[nbr_total].date_de_naissance.jour, &etudiant[nbr_total].date_de_naissance.mois, &etudiant[nbr_total].date_de_naissance.annee);
+    //
+    printf("la date de naissance(j/m/annee): \n");
+    printf("jour:\t");
+    scanf("%d", &etudiant[nbr_total].date_de_naissance.jour);
+    printf("jour:\t");
 
+    scanf("%d", &etudiant[nbr_total].date_de_naissance.mois);
+    printf("jour:\t");
+
+    scanf("%d", &etudiant[nbr_total].date_de_naissance.annee);
+    //
     printf("le note generale: \t");
     scanf("%f", &etudiant[nbr_total].note_generale);
     printf("departement: \t");
@@ -183,36 +194,51 @@ void affichier(){
 }
 
 void cal_moye_gene_part(){
-/*
-    char nom_departemant[30];
-int moyen_generale_depar=0;
-int x=0;
-    printf("entre le nom_departemant\n");
-    scanf(" %[^\n]", nom_departemant);
-    for(int i=0;i<nbr_etudiants;i++){
-        if(strcmp(nom_departemant, etudiants[i].departement)==0){
-            x++;
-            moyen_generale_depar=(moyen_generale_depar + etudiants[i].Note_generale);
 
-        }
+char T[20][50];
+int countDep =0;
+    for (int i = 0; i < nbr_total; i++){
+    int alreadyPrinted = 0;
+    for (int j = 0; j < i; j++)
+    {
+    if (strcmp(etudiant[i].departement, etudiant[j].departement) == 0){
+        alreadyPrinted = 1;
+        break;
+      }
     }
-    printf("moyen generale %d\n",moyen_generale_depar/x);
+    if (!alreadyPrinted)
+    {
+      printf("%s\n", etudiant[i].departement);
+      strcpy(T[countDep], etudiant[i].departement);
+      countDep++;
+    }
+  }
+
+  for (int i = 0; i < countDep; i++)
+  {
+    float somme = 0;
+    int lengthDep = 0;
+
+    for (int j = 0; j < nbr_total; j++)
+    {
+      if (strcmp(T[i], etudiant[j].departement) == 0)
+      {
+        somme += etudiant[j].note_generale;
+        lengthDep++;
+      }
+    }
+    printf("Departement %d %s %.2f: \n ", i + 1, T[i], somme / lengthDep);
+  }
+float somme = 0;
+for ( i = 0; i < nbr_total; i++){
+
+    somme = somme + etudiant[i].note_generale;
+
 }
 
-//la note generale departement
+  printf("la moyenne generale de l'univirsity: %.2f\n", somme/nbr_total);
 
-// for (int i = 0; i < nbr_total; i++){
-//     int isfound = 0;
-//     for (int j = 0; j < nbr_total; j++){
-//         if (strcmp(depdef[j].nomdef, etudiant[i].nom)==0){
-//             deps[count].sumdep
-//         }
-        
-//     }
- */   
 }
-
-
 
 void statistique(){
     int choix1;
@@ -237,30 +263,47 @@ void statistique(){
         printf("le nombre totale d'etudiant inscrit ||  %d  etudiants ||\n", nbr_total);
         break;
     case 2:{
-        for (i = 0; i < nbr_total; i++){
-            for(int j =0; i < nbr_total; i++){
-                if(strcmp(etudiant[j].departement, etudiant[j+1].departement)==0){
-                    acount++;
-                }
+        char T[20][50];  
+    int countDep = 0; 
+
+
+    for (int i = 0; i < nbr_total; i++) {
+        int alreadyPrinted = 0;
+        for (int j = 0; j < i; j++) {
+            if (strcmp(etudiant[i].departement, etudiant[j].departement) == 0) {
+                alreadyPrinted = 1;
+                break;
             }
-            
         }
-        printf("le nombre d'etudiant dans chaque departement: %d");
+        if (!alreadyPrinted) {
+            strcpy(T[countDep], etudiant[i].departement);
+            countDep++;
+        }
     }
-          
+
+    
+    for (int i = 0; i < countDep; i++) {
+        int countEtudiant = 0;
+        for (int j = 0; j < nbr_total; j++) {
+            if (strcmp(T[i], etudiant[j].departement) == 0) {
+                countEtudiant++;
+            }
+        }
+        printf("Departement %s: %d etudiants\n", T[i], countEtudiant);
+    }
+}
         break;
 
         case 3:
         printf("entre la moyenne:\t");
         scanf("%d", &moyenne_choisir);
         for ( i = 0; i < nbr_total; i++){
-            int bonne_moyenne;
             if(etudiant[i].note_generale >= moyenne_choisir){
-                // bonne_moyenne == etudiant[i].note_generale;
                 
         printf("**************************\n");
         printf("le nom: %s\t", etudiant[i].nom);
         printf("le prenom: %s\n", etudiant[i].prenom);
+        printf("le prenom: %.2f\n", etudiant[i].note_generale);
         printf("**************************\n");
         acoun++;
             }
@@ -268,27 +311,58 @@ void statistique(){
 }
         break;
 
-        case 4: 
-        for ( i = 0; i < nbr_total-1; i++){
-            int tmp;
-            for (int j = 0; j < nbr_total-1-i; j++){
+        case 4: {
+        for (int i = 0; i < nbr_total - 1; i++) {
+        for (int j = i + 1; j < nbr_total; j++) {
+            int tmp =0;
+            if (etudiant[i].note_generale < etudiant[j].note_generale) {
                 
-                if (etudiant[j].note_generale > etudiant[j+1].note_generale){
-                    tmp = etudiant[j+1].note_generale;
-                    etudiant[j+1].note_generale = etudiant[j].note_generale;
-                    etudiant[j].note_generale = tmp;
-                }
-
                 
+                list_etudiant tmp = etudiant[i];  
+                etudiant[i] = etudiant[j];   
+                etudiant[j] = tmp;
             }
-            for (int i = 0; i < nbr_total; i++){
-                
-            }
-            
-            
         }
-        
+    }
+
+    
+    printf("Les 3 etudiants ayant les meilleures notes:\n");
+    for (int i = 0; i < 3 && i < nbr_total; i++) {
+        printf("%s %s - Note: %.2f\n", etudiant[i].nom, etudiant[i].prenom, etudiant[i].note_generale);
+    }
+       }
         break;
+
+        case 5:{
+            char T[20][50];  
+    int countDep = 0; 
+
+    
+    for (int i = 0; i < nbr_total; i++) {
+        int alreadyPrinted = 0;
+        for (int j = 0; j < i; j++) {
+            if (strcmp(etudiant[i].departement, etudiant[j].departement) == 0) {
+                alreadyPrinted = 1;
+                break;
+            }
+        }
+        if (!alreadyPrinted) {
+            strcpy(T[countDep], etudiant[i].departement);
+            countDep++;
+        }
+    }
+
+    
+    for (int i = 0; i < countDep; i++) {
+        int countt = 0;
+        for (int j = 0; j < nbr_total; j++) {
+            if (strcmp(T[i], etudiant[j].departement) == 0 && etudiant[j].note_generale >= 10) {
+                countt++;
+            }
+        }
+        printf("Departement %s: %d Etudiants ont reussi\n", T[i], countt);
+    }
+        }
     
     default:
     printf("Oops!! \n");
@@ -297,7 +371,168 @@ void statistique(){
 
 }
 
+void triAlphabitique(){
+    char tmp[50] ;
+    int tmpN ;
+    for(int i = 0 ; i < nbr_total ; i++){
+        for (int x = 0; x > nbr_total; x++){
+            if(strcasecmp(etudiant[x].nom, etudiant[x + 1].nom) > 0 ){
+                //change nom
+                strcpy(tmp,etudiant[x].nom);
+                strcpy(etudiant[x].nom,etudiant[x + 1].nom);
+                strcpy(etudiant[x + 1].nom,etudiant[x].nom);
+                //change prenom
+                strcpy(tmp,etudiant[x].prenom);
+                strcpy(etudiant[x].prenom,etudiant[x + 1].prenom);
+                strcpy(etudiant[x + 1].prenom,etudiant[x].prenom);
+                //change departement
+                strcpy(tmp,etudiant[x].departement);
+                strcpy(etudiant[x].departement,etudiant[x + 1].departement);
+                strcpy(etudiant[x + 1].departement,etudiant[x].departement);
+                //date de naissance
+                tmpN = etudiant[x].date_de_naissance.jour;
+                etudiant[x].date_de_naissance.jour = etudiant[x + 1].date_de_naissance.jour;
+                etudiant[x + 1].date_de_naissance.jour = etudiant[x].date_de_naissance.jour;
 
+                tmpN = etudiant[x].date_de_naissance.mois;
+                etudiant[x].date_de_naissance.mois = etudiant[x + 1].date_de_naissance.mois;
+                etudiant[x + 1].date_de_naissance.mois = etudiant[x].date_de_naissance.mois;
+
+                tmpN = etudiant[x].date_de_naissance.annee;
+                etudiant[x].date_de_naissance.annee = etudiant[x + 1].date_de_naissance.annee;
+                etudiant[x + 1].date_de_naissance.annee = etudiant[x].date_de_naissance.annee;
+
+                //note generale
+                tmpN = etudiant[x].note_generale;
+                etudiant[x].note_generale = etudiant[x + 1].note_generale;
+                etudiant[x + 1].note_generale = etudiant[x].note_generale;
+                //numbre unique
+                tmpN = etudiant[x].nombre_unique;
+                etudiant[x].nombre_unique = etudiant[x + 1].nombre_unique;
+                etudiant[x + 1].nombre_unique = etudiant[x].nombre_unique;
+
+    
+            }
+        }
+        
+    }
+    for (int i = 0; i < nbr_total; i++)
+    {
+         printf("**************************\n");
+        printf("le nom: %s\n", etudiant[i].nom);
+        printf("le prenom: %s\n", etudiant[i].prenom);
+        printf("le departement: %s\n", etudiant[i].departement);
+        printf("la note general: %.2f\n", etudiant[i].note_generale);
+        printf("le date de naissance: %d/%d/%d\n", etudiant[i].date_de_naissance.jour, etudiant[i].date_de_naissance.mois, etudiant[i].date_de_naissance.annee);
+        printf("| ID: >%d<|\n", etudiant[i].nombre_unique);
+    }
+    
+   
+}
+
+void trierMoyenne(){
+     char tmp[50] ;
+    int tmpN ;
+    for(int i = 0 ; i < nbr_total ; i++){
+        for (int x = 0; x > nbr_total; x++){
+            if(etudiant[x+1].note_generale < etudiant[x].note_generale ){
+                //change nom
+                strcpy(tmp,etudiant[x].nom);
+                strcpy(etudiant[x].nom,etudiant[x + 1].nom);
+                strcpy(etudiant[x + 1].nom,etudiant[x].nom);
+                //change prenom
+                strcpy(tmp,etudiant[x].prenom);
+                strcpy(etudiant[x].prenom,etudiant[x + 1].prenom);
+                strcpy(etudiant[x + 1].prenom,etudiant[x].prenom);
+                //change departement
+                strcpy(tmp,etudiant[x].departement);
+                strcpy(etudiant[x].departement,etudiant[x + 1].departement);
+                strcpy(etudiant[x + 1].departement,etudiant[x].departement);
+                //date de naissance
+                tmpN = etudiant[x].date_de_naissance.jour;
+                etudiant[x].date_de_naissance.jour = etudiant[x + 1].date_de_naissance.jour;
+                etudiant[x + 1].date_de_naissance.jour = etudiant[x].date_de_naissance.jour;
+
+                tmpN = etudiant[x].date_de_naissance.mois;
+                etudiant[x].date_de_naissance.mois = etudiant[x + 1].date_de_naissance.mois;
+                etudiant[x + 1].date_de_naissance.mois = etudiant[x].date_de_naissance.mois;
+
+                tmpN = etudiant[x].date_de_naissance.annee;
+                etudiant[x].date_de_naissance.annee = etudiant[x + 1].date_de_naissance.annee;
+                etudiant[x + 1].date_de_naissance.annee = etudiant[x].date_de_naissance.annee;
+
+                //note generale
+                tmpN = etudiant[x].note_generale;
+                etudiant[x].note_generale = etudiant[x + 1].note_generale;
+                etudiant[x + 1].note_generale = etudiant[x].note_generale;
+                //numbre unique
+                tmpN = etudiant[x].nombre_unique;
+                etudiant[x].nombre_unique = etudiant[x + 1].nombre_unique;
+                etudiant[x + 1].nombre_unique = etudiant[x].nombre_unique;
+                
+            }
+        }
+        
+    }
+        for (int i = 0; i < nbr_total; i++){
+            printf("**************************\n");
+        printf("le nom: %s\n", etudiant[i].nom);
+        printf("le prenom: %s\n", etudiant[i].prenom);
+        printf("le departement: %s\n", etudiant[i].departement);
+        printf("la note general: %.2f\n", etudiant[i].note_generale);
+        printf("le date de naissance: %d/%d/%d\n", etudiant[i].date_de_naissance.jour, etudiant[i].date_de_naissance.mois, etudiant[i].date_de_naissance.annee);
+        printf("| ID: >%d<|\n", etudiant[i].nombre_unique);
+        }
+        
+}    
+void trierEtudiants(){
+    int trier_Choix;
+    printf("1>trier par alphabitiques\n");
+    printf("2>trier par moyenne generale\n");
+    printf("3>trier par la reussi\n");
+    printf("tapez votre choix\t");
+    scanf("%d", &trier_Choix);
+
+    switch (trier_Choix){
+    case 1:
+        triAlphabitique();
+        break;
+    
+      case 2:
+        trierMoyenne();
+        break;
+
+    // case 3:
+    //     break;
+    
+    default:
+            printf("tapez votre choix");
+        break;
+    }
+    
+}
+
+
+
+void rechercher(){
+    char nom_chercher[50];
+    printf("tapez le nom:\n");
+    scanf(" %[^\n]", nom_chercher);
+    printf("=========================RECHERCHER===============================\n");
+    for (int i = 0; i < nbr_total; i++){
+    if(strcmp(etudiant[i].nom, nom_chercher) == 0){
+        printf("<----------------------------------------------------->\n");
+        printf("Le nom: %s\n", etudiant[i].nom);
+        printf("Le prenom: %s\n", etudiant[i].prenom);
+        printf("La date de naissance: %d\n", etudiant[i].date_de_naissance);
+        printf("Departement: %s\n", etudiant[i].departement);
+        printf("ID: %d\n", etudiant[i].nombre_unique);
+        printf("\\___________________________________________________________/\n");
+    }
+    
+    }
+    printf("=================================================================\n");
+}
 int main(){
     
     do
@@ -311,7 +546,7 @@ int main(){
             break;
         case 3: suprimer();
             break;
-            break;
+            
         case 4: affichier();
             break;
         case 5: cal_moye_gene_part();
@@ -320,7 +555,12 @@ int main(){
         case 6: statistique();
         break;
 
-        
+        case 7: rechercher();
+        break;
+
+        case 8: trierEtudiants();
+        break;
+
         default:
         printf("Oops !!\n");
             break;
