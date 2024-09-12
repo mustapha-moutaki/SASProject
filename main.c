@@ -1,3 +1,4 @@
+
 #include<stdio.h>
 #include<string.h>
 
@@ -190,14 +191,14 @@ void cal_moye_gene_part(){
     int countDep = 0;
 
     for (i = 0; i < nbr_total; i++){
-        int alreadyPrinted = 0;
+        int dejaexict = 0;
         for (int j = 0; j < i; j++){
             if (strcmp(etudiant[i].departement, etudiant[j].departement) == 0){
-                alreadyPrinted = 1;
+                dejaexict = 1;
                 break;
             }
         }
-        if (!alreadyPrinted){
+        if (!dejaexict){
             strcpy(T[countDep], etudiant[i].departement);
             countDep++;
         }
@@ -272,14 +273,14 @@ void statistique(){
 
 
     for (int i = 0; i < nbr_total; i++) {
-        int alreadyPrinted = 0;
+        int dejaexict = 0;
         for (int j = 0; j < i; j++) {
             if (strcmp(etudiant[i].departement, etudiant[j].departement) == 0) {
-                alreadyPrinted = 1;
+                dejaexict = 1;
                 break;
             }
         }
-        if (!alreadyPrinted) {
+        if (!dejaexict) {
             strcpy(T[countDep], etudiant[i].departement);
             countDep++;
         }
@@ -343,14 +344,14 @@ void statistique(){
 
     
     for (int i = 0; i < nbr_total; i++) {
-        int alreadyPrinted = 0;
+        int dejaexict = 0;
         for (int j = 0; j < i; j++) {
             if (strcmp(etudiant[i].departement, etudiant[j].departement) == 0) {
-                alreadyPrinted = 1;
+                dejaexict = 1;
                 break;
             }
         }
-        if (!alreadyPrinted) {
+        if (!dejaexict) {
             strcpy(T[countDep], etudiant[i].departement);
             countDep++;
         }
@@ -367,7 +368,7 @@ void statistique(){
         printf("Departement %s: %d Etudiants ont reussi\n", T[i], countt);
     }
         }
-    
+    break;
     default:
     printf("Oops!! \n");
         break;
@@ -426,6 +427,23 @@ void trierMoyenne() {
     }
 }
 
+void trierPlus10(){
+    list_etudiant tmp;
+    for (int i = 0; i < nbr_total; i++){
+        if (etudiant[i].note_generale >= 10){
+            
+            printf("**************************\n");
+        printf("Nom: %s\n", etudiant[i].nom);
+        printf("Prenom: %s\n", etudiant[i].prenom);
+        printf("Departement: %s\n", etudiant[i].departement);
+        printf("Note generale: %.2f\n", etudiant[i].note_generale);
+        printf("Date de naissance: %d/%d/%d\n", etudiant[i].date_de_naissance.jour, etudiant[i].date_de_naissance.mois, etudiant[i].date_de_naissance.annee);
+        printf("| ID: >%d<|\n", etudiant[i].nombre_unique);
+        }
+        
+    }
+    
+}
 
 int main(){
     do{
@@ -453,13 +471,15 @@ int main(){
             rechercher();
             break;
         case 8:
-            printf("Trier par:\n1) Alphabetiquement\n2) Par Moyenne Generale\n");
+            printf("Trier par:\n1) Alphabetiquement\n2) Par Moyenne Generale\n3) Par Moyenne plus 10\n");
             int sortChoice;
             scanf("%d", &sortChoice);
             if (sortChoice == 1) {
                 triAlphabitique();
             } else if (sortChoice == 2) {
                 trierMoyenne();
+            }else if (sortChoice == 3) {
+                trierPlus10();
             } else {
                 printf("Choix invalide!\n");
             }
