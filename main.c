@@ -224,7 +224,25 @@ void cal_moye_gene_part(){
     printf("La moyenne generale de l'universite: %.2f\n", somme / nbr_total);
 }
 
-
+void rechercher(){
+    char nom_chercher[50];
+    printf("tapez le nom:\n");
+    scanf(" %[^\n]", nom_chercher);
+    printf("=========================RECHERCHER===============================\n");
+    for (int i = 0; i < nbr_total; i++){
+    if(strcmp(etudiant[i].nom, nom_chercher) == 0){
+        printf("<----------------------------------------------------->\n");
+        printf("Le nom: %s\n", etudiant[i].nom);
+        printf("Le prenom: %s\n", etudiant[i].prenom);
+        printf("La date de naissance: %d\n", etudiant[i].date_de_naissance);
+        printf("Departement: %s\n", etudiant[i].departement);
+        printf("ID: %d\n", etudiant[i].nombre_unique);
+        printf("\\___________________________________________________________/\n");
+    }
+    
+    }
+    printf("=================================================================\n");
+}
 
 void statistique(){
     int choix1;
@@ -432,7 +450,7 @@ int main(){
             statistique();
             break;
         case 7:
-            printf("Recherche pas encore disponible\n");
+            rechercher();
             break;
         case 8:
             printf("Trier par:\n1) Alphabetiquement\n2) Par Moyenne Generale\n");
@@ -447,7 +465,7 @@ int main(){
             }
             break;
         default:
-            printf("Choix invalide! Veuillez reessayer.\n");
+            printf("Choix invalidf.\n");
         }
     } while (choix != 0);
 
